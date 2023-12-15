@@ -65,6 +65,7 @@ static void timer_isr(void)
 
 static void timer_isr_end(void) {} /* code marker for djgpp */
 
+#if 0
 static void shutdown_everything(void)
 {
    if (console.filename)
@@ -83,6 +84,7 @@ static void shutdown_everything(void)
    vid_shutdown();
    log_shutdown();
 }
+#endif
 
 /* End the current context */
 void main_eject(void)
@@ -100,7 +102,7 @@ void main_eject(void)
 
    if (NULL != console.filename)
    {
-      free(console.filename);
+      emu_Free(console.filename);
       console.filename = NULL;
    }
    console.type = system_unknown;
@@ -116,7 +118,7 @@ void main_quit(void)
    /* if there's a pending filename / system, clear */
    if (NULL != console.nextfilename)
    {
-      free(console.nextfilename);
+      emu_Free(console.nextfilename);
       console.nextfilename = NULL;
    }
    console.nexttype = system_unknown;
@@ -150,7 +152,7 @@ static int internal_insert(const char *filename, system_t type)
    if (system_autodetect == type)
       type = detect_systemtype(filename);
 
-   console.filename = strdup(filename);
+   console.filename = emu_Strdup(filename);
    console.type = type;
 
    /* set up the event system for this system type */
@@ -180,7 +182,7 @@ static int internal_insert(const char *filename, system_t type)
    default:
       log_printf("system type unknown, playing nofrendo NES intro.\n");
       if (NULL != console.filename)
-         free(console.filename);
+         emu_Free(console.filename);
 
       /* oooh, recursion */
       return internal_insert(filename, system_nes);
@@ -192,7 +194,7 @@ static int internal_insert(const char *filename, system_t type)
 /* This tells main_loop to load this next image */
 void main_insert(const char *filename, system_t type)
 {
-   console.nextfilename = strdup(filename);
+   console.nextfilename = emu_Strdup(filename);
    console.nexttype = type;
 
    main_eject();
@@ -235,7 +237,7 @@ int main_loop(const char *filename, system_t type)
       return -1;
 	//log printf("vid_init done\n");
 
-   console.nextfilename = strdup(filename);
+   console.nextfilename = emu_Strdup(filename);
    console.nexttype = type;
 
 //   while (false == console.quit)

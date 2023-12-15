@@ -121,9 +121,9 @@ void pal_generate(void)
 
          theta = (float) (PI * ((col_angles[z] + hue) / 180.0));
 
-         r = (int) (256.0 * (y + s * sin(theta)));
-         g = (int) (256.0 * (y - ((27 / 53.0) * s * sin(theta)) + ((10 / 53.0) * s * cos(theta))));
-         b = (int) (256.0 * (y - (s * cos(theta))));
+         r = (int) (256.0 * (y + s * sinf(theta)));
+         g = (int) (256.0 * (y - ((27 / 53.0) * s * sinf(theta)) + ((10 / 53.0) * s * cosf(theta))));
+         b = (int) (256.0 * (y - (s * cosf(theta))));
 
          if (r > 255)
             r = 255;

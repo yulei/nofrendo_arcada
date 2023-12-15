@@ -69,7 +69,7 @@ static bool option_drawsprites = true;
 void gui_savesnap(void)
 {
    char filename[PATH_MAX];
-   nes_t *nes = nes_getcontextptr();
+   //nes_t *nes = nes_getcontextptr();
 
    if (osd_makesnapname(filename, PATH_MAX) < 0)
       return;

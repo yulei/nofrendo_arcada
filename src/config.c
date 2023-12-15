@@ -12,7 +12,7 @@
 #include "log.h"
 #include "osd.h"
 #include "nofconfig.h"
-#include "version.h"
+#include "nofrendo_version.h"
 
 
 /* interface */

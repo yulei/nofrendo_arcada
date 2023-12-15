@@ -125,7 +125,7 @@ static void map5_write(uint32 address, uint8 value)
    case 0x5115:
       mmc_bankrom(8, 0x8000, value);
       mmc_bankrom(8, 0xA000, value + 1);
-      //if (page_size == 8)
+      if (page_size == 8);
       //   mmc_bankrom(8, 0xA000, value);
       //else if (page_size == 16)
       //   mmc_bankrom(16, 0x8000, value >> 1);

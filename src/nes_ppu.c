@@ -153,7 +153,7 @@ void ppu_destroy(ppu_t **src_ppu)
 {
    if (*src_ppu)
    {
-      free(*src_ppu);
+      emu_Free(*src_ppu);
       *src_ppu = NULL;
    }
 }

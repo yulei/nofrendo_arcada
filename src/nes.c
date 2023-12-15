@@ -339,11 +339,13 @@ static void system_video(bool draw)
 /* main emulation loop */
 void nes_emulate(void)
 {
+#ifndef NOLOOP
   int last_ticks, frames_to_render;
-   osd_setsound(nes.apu->process);
 
    last_ticks = nofrendo_ticks;
    frames_to_render = 0;
+#endif
+   osd_setsound(nes.apu->process);
    nes.scanline_cycles = 0;
    nes.fiq_cycles = (int) NES_FIQ_PERIOD;
 
@@ -444,11 +446,11 @@ void nes_destroy(nes_t **machine)
       if ((*machine)->cpu)
       {
          if ((*machine)->cpu->mem_page[0])
-            free((*machine)->cpu->mem_page[0]);
-         free((*machine)->cpu);
+            emu_Free((*machine)->cpu->mem_page[0]);
+         emu_Free((*machine)->cpu);
       }
 
-      free(*machine);
+      emu_Free(*machine);
       *machine = NULL;
    }
 }
@@ -514,7 +516,7 @@ nes_t *nes_create(void)
    sndinfo_t osd_sound;
    int i;
 
-   machine = malloc(sizeof(nes_t));
+   machine = emu_Malloc(sizeof(nes_t));
    if (NULL == machine)
       return NULL;
 
@@ -529,14 +531,14 @@ nes_t *nes_create(void)
    machine->autoframeskip = true;
 
    /* cpu */
-   machine->cpu = malloc(sizeof(nes6502_context));
+   machine->cpu = emu_Malloc(sizeof(nes6502_context));
    if (NULL == machine->cpu)
       goto _fail;
 
    memset(machine->cpu, 0, sizeof(nes6502_context));
    
    /* allocate 2kB RAM */
-   machine->cpu->mem_page[0] = malloc(NES_RAMSIZE);
+   machine->cpu->mem_page[0] = emu_Malloc(NES_RAMSIZE);
    if (NULL == machine->cpu->mem_page[0])
       goto _fail;
 

@@ -34,7 +34,7 @@ void bmp_clear(const bitmap_t *bitmap, uint8 color)
    memset(bitmap->data, color, bitmap->pitch * bitmap->height);
 }
 
-static bitmap_t *_make_bitmap(uint8 *data_addr, bool hw, int width, 
+static bitmap_t *my_make_bitmap(uint8 *data_addr, bool hw, int width, 
                               int height, int pitch, int overdraw)
 {
    bitmap_t *bitmap;
@@ -94,14 +94,16 @@ bitmap_t *bmp_create(int width, int height, int overdraw)
 //   if (NULL == addr)
 //      return NULL;
 //printf("bmp_create\n");      
-   return _make_bitmap((uint8*)fb, false, width, height, width, overdraw);
+   return my_make_bitmap((uint8*)fb, false, width, height, width, overdraw);
 }
 
 
 /* allocate and initialize a hardware bitmap */
 bitmap_t *bmp_createhw(uint8 *addr, int width, int height, int pitch)
 {
-   return _make_bitmap(addr, true, width, height, pitch, 0); /* zero overdraw */
+   bitmap_t * bmp = my_make_bitmap(addr, true, width, height, pitch, 0); /* zero overdraw */
+
+   return bmp;
 }
 
 /* Deallocate space for a bitmap structure */
@@ -109,7 +111,7 @@ void bmp_destroy(bitmap_t **bitmap)
 {
    if (*bitmap)
    {
-      free(*bitmap);
+      emu_Free(*bitmap);
       *bitmap = NULL;
    }
 }

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define HAS_SND     1
-#define CUSTOM_SND  1
+#define HAS_SND     0
+#define CUSTOM_SND  0
 //#define TIMER_REND  1
 
 
@@ -22,22 +22,28 @@
   #define DEFAULT_FLASH_ADDRESS (0x40000-2048)  // make sure this is after this programs memory, with unrolled loops we're at 222,192! we need a little more than 256KB since roms have 10 extra bytes
   #define USE_SAVEFILES
   #define USE_SRAM
+#elif defined(AMK_NOFRENDO)
+  //#define EMU_SCALEDOWN       2
+  //#define USE_FLASH_FOR_ROMSTORAGE       // slows it down, but bigger roms!
+  //#define DEFAULT_FLASH_ADDRESS (0x40000-2048)  // make sure this is after this programs memory, with unrolled loops we're at 222,192! we need a little more than 256KB since roms have 10 extra bytes
+  //#define USE_SAVEFILES
+ // #define USE_SRAM
 #else 
   #error "Need to give some platform details!"
 #endif
 
-#define emu_Init(ROM) {nes_Start(ROM); nes_Init(); }
-#define emu_Step(x) { nes_Step(); }
 
 #define PALETTE_SIZE         256
 #define VID_FRAME_SKIP       0x0
 #define TFT_VBUFFER_YCROP    0
 #define SINGLELINE_RENDERING 1
 
-extern void emu_init(void);
-extern void emu_printf(const char *format, ...);
+
+extern void emu_Init(char* rom);
+extern void emu_Step(uint32_t frame);
 extern void * emu_Malloc(int size);
 extern void emu_Free(void * pt);
+extern char* emu_Strdup(const char* str);
 extern uint8_t *emu_LoadROM(char *filename);
 extern int emu_FileOpen(char * filename);
 extern int emu_FileRead(uint8_t * buf, int size);
@@ -67,5 +73,7 @@ extern void emu_sndPlayBuzz(int size, int val);
 extern void emu_sndInit();
 extern void emu_resetus(void);
 extern int emu_us(void);
+
+extern void emu_printf(const char *format, ...);
 
 #endif
