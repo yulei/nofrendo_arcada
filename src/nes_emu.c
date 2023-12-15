@@ -293,6 +293,11 @@ void nes_End(void) {
 #if !defined(USE_FLASH_FOR_ROMSTORAGE)
   if (romdata) {
     emu_Free(romdata);
+    romdata = NULL;
+  }
+
+  if (myBitmap) {
+   myBitmap = NULL;
   }
 #endif
 }

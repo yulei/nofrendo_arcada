@@ -126,7 +126,7 @@ ppu_t *ppu_create(void)
    static bool pal_generated = false;
    ppu_t *temp;
 
-   temp = malloc(sizeof(ppu_t));
+   temp = emu_Malloc(sizeof(ppu_t));
    if (NULL == temp)
       return NULL;
 
